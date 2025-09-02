@@ -35,7 +35,7 @@ export default [
 
   // server config
   {
-    files: ['server/**/*.js'],
+    files: ['server/**/*.{js,cjs}'],
     languageOptions: {
       globals: {
         ...globals.node,

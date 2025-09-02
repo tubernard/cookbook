@@ -1,22 +1,21 @@
+import './loadEnvironment.cjs';
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import connectDB from './db/connection.js';
+// import recipeRoutes from './routes/recipeRoutes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+connectDB();
 
 const app = express();
 const PORT = 3001;
 
 app.use(express.json());
 
-// A sample API route
-app.get('/api/recipes', (req, res) => {
-  res.json([
-    { id: 1, name: 'Spaghetti Bolognese' },
-    { id: 2, name: 'Chicken Parmesan' },
-  ]);
-});
+// app.use('/api/recipes', recipeRoutes);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../dist')));
