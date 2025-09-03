@@ -1,16 +1,18 @@
 import {
+  ActionIcon,
+  Box,
+  Button,
+  Group,
+  NumberInput,
+  Text,
   TextInput,
   Textarea,
-  Text,
-  Button,
-  Box,
-  Group,
-  ActionIcon,
-  NumberInput,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { IconTrash } from '@tabler/icons-react';
 import { randomId } from '@mantine/hooks';
+import { IconTrash } from '@tabler/icons-react';
+import { zod4Resolver } from 'mantine-form-zod-resolver';
+import { recipeSchema } from '../../shared/schemas/recipeSchema.js';
 
 const TextWithAstrisk = ({ children }) => (
   <Group gap="xs" mt="md">
@@ -27,29 +29,19 @@ const removeKey = ({ name, quantity }) => ({
   quantity,
 });
 
-const validateString = (input, errorMsg) =>
-  input.trim().length > 0 ? null : errorMsg;
-
 const AddRecipe = () => {
   const form = useForm({
     initialValues: {
       name: '',
       ingredients: [{ name: '', quantity: '', key: randomId() }],
       instructions: '',
-      prepMinutes: '',
-      cookMinutes: '',
-      numServings: '',
-      image: '',
+      prepMinutes: null,
+      cookMinutes: null,
+      numServings: null,
+      // image: '',
     },
 
-    validate: {
-      name: (value) => validateString(value, 'Recipe name is required'),
-      ingredients: {
-        name: (value) => validateString(value, 'Ingredient name is required'),
-        quantity: (value) => validateString(value, 'Quantity is required'),
-      },
-      instructions: (value) => validateString(value, 'Instructions required'),
-    },
+    validate: zod4Resolver(recipeSchema),
   });
 
   const ingredientFields = form.values.ingredients.map((item, index) => (
@@ -92,7 +84,9 @@ const AddRecipe = () => {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to create recipe');
+        const errorData = await response.json();
+        form.setErrors(errorData.errors);
+        return;
       }
 
       const newRecipe = await response.json();

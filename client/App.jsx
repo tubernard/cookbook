@@ -1,8 +1,7 @@
+import { MantineProvider } from '@mantine/core';
+import '@mantine/core/styles.css';
 import { useEffect, useState } from 'react';
 import AddRecipe from './components/AddRecipe';
-import '@mantine/core/styles.css';
-
-import { MantineProvider } from '@mantine/core';
 
 const App = () => {
   const [recipes, setRecipes] = useState([]);

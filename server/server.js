@@ -25,7 +25,7 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 // Centralized error handling middleware
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   console.error(err.stack);
 
   // Handle Mongoose Errors

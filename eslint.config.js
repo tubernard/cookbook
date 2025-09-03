@@ -5,8 +5,13 @@ import prettierRecommended from 'eslint-plugin-prettier/recommended';
 
 export default [
   js.configs.recommended,
+  {
+    rules: {
+      'no-unused-vars': 'warn',
+    },
+  },
 
-  // client config
+  // React client config
   {
     files: ['client/**/*.{js,jsx}'],
     languageOptions: {
@@ -34,7 +39,7 @@ export default [
     },
   },
 
-  // server config
+  // Express server config
   {
     files: ['server/**/*.{js,cjs}'],
     languageOptions: {
