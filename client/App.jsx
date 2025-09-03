@@ -20,7 +20,7 @@ const App = () => {
         <AddRecipe />
         <ul>
           {recipes.map((recipe) => (
-            <li key={recipe.id}>{recipe.name}</li>
+            <li key={recipe._id}>{recipe.name}</li>
           ))}
         </ul>
       </div>
