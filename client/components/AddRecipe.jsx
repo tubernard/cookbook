@@ -22,9 +22,9 @@ const TextWithAstrisk = ({ children }) => (
     </Text>
   </Group>
 );
-const removeKey = ({ name, value }) => ({
+const removeKey = ({ name, quantity }) => ({
   name,
-  value,
+  quantity,
 });
 
 const validateString = (input, errorMsg) =>
@@ -36,8 +36,8 @@ const AddRecipe = () => {
       name: '',
       ingredients: [{ name: '', quantity: '', key: randomId() }],
       instructions: '',
-      prepTime: '',
-      cookTime: '',
+      prepMinutes: '',
+      cookMinutes: '',
       numServings: '',
       image: '',
     },
@@ -118,13 +118,13 @@ const AddRecipe = () => {
             label="Prep Time (mins)"
             placeholder="15"
             min={0}
-            {...form.getInputProps('prepTime')}
+            {...form.getInputProps('prepMinutes')}
           />
           <NumberInput
             label="Cook Time (mins)"
             placeholder="30"
             min={0}
-            {...form.getInputProps('cookTime')}
+            {...form.getInputProps('cookMinutes')}
           />
           <NumberInput
             label="Servings"
