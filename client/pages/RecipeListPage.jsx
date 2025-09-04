@@ -1,34 +1,53 @@
 import { useState, useEffect } from 'react';
-import { Title, List, ThemeIcon } from '@mantine/core';
-import { IconChefHat } from '@tabler/icons-react';
+import { Title, SimpleGrid, Loader, Text } from '@mantine/core';
+import RecipeCard from '../components/RecipeCard';
 
 const RecipeListPage = () => {
   const [recipes, setRecipes] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetch('/api/recipes')
-      .then((res) => res.json())
-      .then((data) => setRecipes(data));
+    const fetchRecipes = async () => {
+      try {
+        const response = await fetch('/api/recipes');
+        if (!response.ok) {
+          throw new Error('Failed to fetch recipes');
+        }
+        const data = await response.json();
+        setRecipes(data);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchRecipes();
   }, []);
+
+  if (isLoading) {
+    return <Loader />;
+  }
+
+  if (error) {
+    return <Text color="red">Error: {error}</Text>;
+  }
 
   return (
     <>
-      <Title order={2}>All Recipes</Title>
-      <List
-        spacing="xs"
-        size="sm"
-        center
-        mt="md"
-        icon={
-          <ThemeIcon color="teal" size={24} radius="xl">
-            <IconChefHat size="1rem" />
-          </ThemeIcon>
-        }
+      <Title order={2} mb="xl">
+        All Recipes
+      </Title>
+      <SimpleGrid
+        cols={{ base: 1, sm: 2, lg: 3 }}
+        spacing={{ base: 'md', sm: 'xl' }}
+        verticalSpacing={{ base: 'md', sm: 'xl' }}
       >
         {recipes.map((recipe) => (
-          <List.Item key={recipe._id}>{recipe.name}</List.Item>
+          <RecipeCard key={recipe._id} recipe={recipe} />
         ))}
-      </List>
+      </SimpleGrid>
     </>
   );
 };

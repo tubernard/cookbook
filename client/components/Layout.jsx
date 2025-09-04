@@ -1,4 +1,11 @@
-import { AppShell, Burger, Group, NavLink } from '@mantine/core';
+import {
+  AppShell,
+  Burger,
+  Group,
+  NavLink,
+  Text,
+  UnstyledButton,
+} from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { Outlet, Link } from 'react-router-dom';
 import { IconHome, IconPlus, IconList } from '@tabler/icons-react';
@@ -15,7 +22,9 @@ const Layout = () => {
       <AppShell.Header>
         <Group h="100%" px="md">
           <Burger opened={opened} onClick={toggle} hiddenFrom="sm" size="sm" />
-          Recipe Book
+          <UnstyledButton component={Link} to="/">
+            <Text fw={700}>Recipe Box</Text>
+          </UnstyledButton>
         </Group>
       </AppShell.Header>
 
@@ -25,18 +34,21 @@ const Layout = () => {
           component={Link}
           to="/"
           leftSection={<IconHome size="1rem" stroke={1.5} />}
+          onClick={toggle}
         />
         <NavLink
           label="View Recipes"
           component={Link}
           to="/recipes"
           leftSection={<IconList size="1rem" stroke={1.5} />}
+          onClick={toggle}
         />
         <NavLink
           label="Add Recipe"
           component={Link}
           to="/add"
           leftSection={<IconPlus size="1rem" stroke={1.5} />}
+          onClick={toggle}
         />
       </AppShell.Navbar>
 
