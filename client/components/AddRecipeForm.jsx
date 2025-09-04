@@ -29,7 +29,7 @@ const removeKey = ({ name, quantity }) => ({
   quantity,
 });
 
-const AddRecipe = () => {
+const AddRecipeForm = () => {
   const form = useForm({
     initialValues: {
       name: '',
@@ -169,4 +169,4 @@ const AddRecipe = () => {
   );
 };
 
-export default AddRecipe;
+export default AddRecipeForm;
