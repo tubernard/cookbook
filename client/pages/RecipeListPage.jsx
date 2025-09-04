@@ -1,4 +1,3 @@
-// filepath: client/pages/RecipeListPage.jsx
 import { useState, useEffect } from 'react';
 import { Title, List, ThemeIcon } from '@mantine/core';
 import { IconChefHat } from '@tabler/icons-react';

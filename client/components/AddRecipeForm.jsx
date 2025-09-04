@@ -10,8 +10,10 @@ import {
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { randomId } from '@mantine/hooks';
-import { IconTrash } from '@tabler/icons-react';
+import { notifications } from '@mantine/notifications';
+import { IconCheck, IconTrash, IconX } from '@tabler/icons-react';
 import { zod4Resolver } from 'mantine-form-zod-resolver';
+import { useState } from 'react';
 import { recipeSchema } from '../../shared/schemas/recipeSchema.js';
 
 const TextWithAstrisk = ({ children }) => (
@@ -30,6 +32,8 @@ const removeKey = ({ name, quantity }) => ({
 });
 
 const AddRecipeForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const form = useForm({
     initialValues: {
       name: '',
@@ -69,6 +73,8 @@ const AddRecipeForm = () => {
   ));
 
   const handleSubmit = async (values) => {
+    setIsLoading(true);
+
     const submissionData = {
       ...values,
       ingredients: values.ingredients.map(removeKey),
@@ -86,14 +92,37 @@ const AddRecipeForm = () => {
       if (!response.ok) {
         const errorData = await response.json();
         form.setErrors(errorData.errors);
+
+        notifications.show({
+          title: 'Please correct the errors',
+          message: 'Your submission has validation errors.',
+          color: 'yellow',
+          icon: <IconX size="1.1rem" />,
+        });
         return;
       }
 
       const newRecipe = await response.json();
       console.log('Recipe created:', newRecipe);
       form.reset();
+
+      notifications.show({
+        title: 'Success!',
+        message: 'Your recipe has been saved.',
+        color: 'teal',
+        icon: <IconCheck size="1.1rem" />,
+      });
     } catch (err) {
       console.error('Error:', err);
+
+      notifications.show({
+        title: 'An error occurred',
+        message: 'Could not save the recipe. Please try again later.',
+        color: 'red',
+        icon: <IconX size="1.1rem" />,
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -161,7 +190,7 @@ const AddRecipeForm = () => {
           </Button>
         </Group>
 
-        <Button type="submit" mt="xl" fullWidth>
+        <Button type="submit" mt="xl" fullWidth loading={isLoading}>
           Save Recipe
         </Button>
       </form>

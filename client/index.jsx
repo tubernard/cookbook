@@ -2,7 +2,9 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { MantineProvider } from '@mantine/core';
+import { Notifications } from '@mantine/notifications';
 import '@mantine/core/styles.css';
+import '@mantine/notifications/styles.css';
 
 import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
@@ -36,6 +38,7 @@ const root = createRoot(container);
 root.render(
   <React.StrictMode>
     <MantineProvider>
+      <Notifications />
       <RouterProvider router={router} />
     </MantineProvider>
   </React.StrictMode>,
