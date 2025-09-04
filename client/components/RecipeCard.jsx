@@ -15,6 +15,7 @@ import {
   IconUsers,
 } from '@tabler/icons-react';
 import RecipeBoxLogo from './RecipeBoxLogo';
+import { applyCloudinaryTransformation } from '../utils/cloudinary';
 
 const RecipeCard = ({ recipe }) => {
   const hasImage = recipe.image && recipe.image.trim() !== '';
@@ -24,7 +25,10 @@ const RecipeCard = ({ recipe }) => {
       <Card.Section>
         {hasImage ? (
           <Image
-            src={recipe.image}
+            src={applyCloudinaryTransformation(
+              recipe.image,
+              'recipe-card-thumb',
+            )}
             height={180}
             alt={`Image of ${recipe.name}`}
           />

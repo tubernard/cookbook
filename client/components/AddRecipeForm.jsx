@@ -2,6 +2,7 @@ import {
   ActionIcon,
   Box,
   Button,
+  FileInput,
   Group,
   NumberInput,
   Text,
@@ -11,10 +12,11 @@ import {
 import { useForm } from '@mantine/form';
 import { randomId } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
-import { IconCheck, IconTrash, IconX } from '@tabler/icons-react';
+import { IconCheck, IconTrash, IconUpload, IconX } from '@tabler/icons-react';
 import { zod4Resolver } from 'mantine-form-zod-resolver';
 import { useState } from 'react';
 import { recipeSchema } from '../../shared/schemas/recipeSchema.js';
+import { createRecipe, uploadImage } from '../services/apiService.js';
 
 const TextWithAstrisk = ({ children }) => (
   <Group gap="xs" mt="md">
@@ -33,7 +35,6 @@ const removeKey = ({ name, quantity }) => ({
 
 const AddRecipeForm = () => {
   const [isLoading, setIsLoading] = useState(false);
-
   const form = useForm({
     initialValues: {
       name: '',
@@ -42,7 +43,7 @@ const AddRecipeForm = () => {
       prepMinutes: null,
       cookMinutes: null,
       numServings: null,
-      // image: '',
+      image: null,
     },
 
     validate: zod4Resolver(recipeSchema),
@@ -74,36 +75,20 @@ const AddRecipeForm = () => {
 
   const handleSubmit = async (values) => {
     setIsLoading(true);
-
-    const submissionData = {
-      ...values,
-      ingredients: values.ingredients.map(removeKey),
-    };
-
     try {
-      const response = await fetch('/api/recipes', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(submissionData),
-      });
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        form.setErrors(errorData.errors);
-
-        notifications.show({
-          title: 'Please correct the errors',
-          message: 'Your submission has validation errors.',
-          color: 'yellow',
-          icon: <IconX size="1.1rem" />,
-        });
-        return;
+      let imageUrl = null;
+      if (values.image) {
+        imageUrl = await uploadImage(values.image);
       }
 
-      const newRecipe = await response.json();
-      console.log('Recipe created:', newRecipe);
+      const submissionData = {
+        ...values,
+        image: imageUrl,
+        ingredients: values.ingredients.map(removeKey),
+      };
+
+      await createRecipe(submissionData);
+
       form.reset();
 
       notifications.show({
@@ -117,7 +102,7 @@ const AddRecipeForm = () => {
 
       notifications.show({
         title: 'An error occurred',
-        message: 'Could not save the recipe. Please try again later.',
+        message: err.message || 'Could not save the recipe. Please try again.',
         color: 'red',
         icon: <IconX size="1.1rem" />,
       });
@@ -157,12 +142,14 @@ const AddRecipeForm = () => {
           />
         </Group>
 
-        {/* <TextInput
-          label="Image URL"
-          placeholder="https://example.com/image.jpg"
+        <FileInput
+          label="Recipe Image"
+          placeholder="Upload an image"
           mt="md"
+          leftSection={<IconUpload size={14} />}
+          accept="image/png,image/jpeg"
           {...form.getInputProps('image')}
-        /> */}
+        />
 
         <Textarea
           withAsterisk

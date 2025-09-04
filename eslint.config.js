@@ -41,7 +41,7 @@ export default [
 
   // Express server config
   {
-    files: ['server/**/*.{js,cjs}'],
+    files: ['server/**/*.{js,cjs}', 'shared/**/*.js'],
     languageOptions: {
       globals: {
         ...globals.node,

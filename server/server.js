@@ -1,21 +1,30 @@
 import './loadEnvironment.cjs';
+import { v2 as cloudinary } from 'cloudinary';
 import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import connectDB from './db/connection.js';
 import recipeRoutes from './routes/recipeRoutes.js';
+import uploadRoutes from './routes/uploadRoutes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-connectDB();
-
 const app = express();
 const PORT = 3001;
+
+connectDB();
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 app.use(express.json());
 
 app.use('/api/recipes', recipeRoutes);
+app.use('/api/upload', uploadRoutes);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../dist')));
