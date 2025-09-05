@@ -22,9 +22,26 @@ import {
 import { Link } from 'react-router-dom';
 import { applyCloudinaryTransformation } from '../utils/cloudinary';
 import RecipeBoxLogo from './RecipeBoxLogo';
+import { useModals } from '@mantine/modals';
 
-const RecipeCard = ({ recipe }) => {
+const RecipeCard = ({ recipe, onDelete }) => {
+  const modals = useModals();
   const hasImage = recipe.image && recipe.image.trim() !== '';
+
+  const openDeleteModal = () =>
+    modals.openConfirmModal({
+      title: 'Delete Recipe',
+      centered: true,
+      children: (
+        <Text size="sm">
+          {`Are you sure you want to delete the ${recipe.name} recipe? This
+          action is permanent.`}
+        </Text>
+      ),
+      labels: { confirm: 'Delete Recipe', cancel: "No, don't delete it" },
+      confirmProps: { color: 'red' },
+      onConfirm: () => onDelete(recipe._id),
+    });
 
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
@@ -62,7 +79,11 @@ const RecipeCard = ({ recipe }) => {
             >
               Edit Recipe
             </Menu.Item>
-            <Menu.Item leftSection={<IconTrash size={14} />} color="red">
+            <Menu.Item
+              leftSection={<IconTrash size={14} />}
+              color="red"
+              onClick={openDeleteModal} // Call the modal function on click
+            >
               Delete Recipe
             </Menu.Item>
           </Menu.Dropdown>

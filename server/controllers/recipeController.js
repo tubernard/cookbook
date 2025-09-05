@@ -49,7 +49,7 @@ recipeController.updateRecipe = async (req, res, next) => {
     const updatedRecipe = await Recipe.findByIdAndUpdate(
       req.params.id,
       req.body,
-      { new: true, runValidators: true }, // Return the updated doc and run schema validation
+      { new: true, runValidators: true },
     );
 
     if (!updatedRecipe) {
@@ -61,6 +61,22 @@ recipeController.updateRecipe = async (req, res, next) => {
     return next({
       log: `Error in recipeController.updateRecipe: ${err}`,
       message: { err: 'An error occurred updating the recipe.' },
+    });
+  }
+};
+
+recipeController.deleteRecipe = async (req, res, next) => {
+  try {
+    const deletedRecipe = await Recipe.findByIdAndDelete(req.params.id);
+
+    if (!deletedRecipe) {
+      return res.status(404).json({ message: 'Recipe not found' });
+    }
+    return res.status(200).json({ message: 'Recipe deleted successfully' });
+  } catch (err) {
+    return next({
+      log: `Error in recipeController.deleteRecipe: ${err}`,
+      message: { err: 'An error occurred while deleting the recipe.' },
     });
   }
 };

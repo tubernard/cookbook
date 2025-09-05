@@ -1,6 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Title, SimpleGrid, Loader, Text } from '@mantine/core';
 import RecipeCard from '../components/RecipeCard';
+import { deleteRecipe } from '../services/apiService';
+import { notifications } from '@mantine/notifications';
+import { IconCheck, IconX } from '@tabler/icons-react';
 
 const RecipeListPage = () => {
   const [recipes, setRecipes] = useState([]);
@@ -26,6 +29,27 @@ const RecipeListPage = () => {
     fetchRecipes();
   }, []);
 
+  const handleDelete = async (id) => {
+    try {
+      await deleteRecipe(id);
+      // Remove the deleted recipe from the local state to update the UI
+      setRecipes((prevRecipes) => prevRecipes.filter((r) => r._id !== id));
+      notifications.show({
+        title: 'Success!',
+        message: 'The recipe has been deleted.',
+        color: 'teal',
+        icon: <IconCheck size="1.1rem" />,
+      });
+    } catch {
+      notifications.show({
+        title: 'Error',
+        message: 'Failed to delete the recipe.',
+        color: 'red',
+        icon: <IconX size="1.1rem" />,
+      });
+    }
+  };
+
   if (isLoading) {
     return <Loader />;
   }
@@ -45,7 +69,11 @@ const RecipeListPage = () => {
         verticalSpacing={{ base: 'md', sm: 'xl' }}
       >
         {recipes.map((recipe) => (
-          <RecipeCard key={recipe._id} recipe={recipe} />
+          <RecipeCard
+            key={recipe._id}
+            recipe={recipe}
+            onDelete={handleDelete}
+          />
         ))}
       </SimpleGrid>
     </>

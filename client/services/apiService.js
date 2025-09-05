@@ -91,3 +91,20 @@ export const updateRecipe = async (id, recipeData) => {
 
   return response.json();
 };
+
+/**
+ * Deletes a recipe by its ID.
+ * @param {string} id The ID of the recipe to delete.
+ * @returns {Promise<object>} The success message from the server.
+ */
+export const deleteRecipe = async (id) => {
+  const response = await fetch(`/api/recipes/${id}`, {
+    method: 'DELETE',
+  });
+
+  if (!response.ok) {
+    throw new Error('Failed to delete recipe.');
+  }
+
+  return response.json();
+};

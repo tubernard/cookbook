@@ -11,6 +11,7 @@ import HomePage from './pages/HomePage';
 import RecipeListPage from './pages/RecipeListPage';
 import AddRecipePage from './pages/AddRecipePage';
 import EditRecipePage from './pages/EditRecipePage';
+import { ModalsProvider } from '@mantine/modals';
 
 const router = createBrowserRouter([
   {
@@ -43,8 +44,10 @@ const root = createRoot(container);
 root.render(
   <React.StrictMode>
     <MantineProvider>
-      <Notifications />
-      <RouterProvider router={router} />
+      <ModalsProvider>
+        <Notifications />
+        <RouterProvider router={router} />
+      </ModalsProvider>
     </MantineProvider>
   </React.StrictMode>,
 );

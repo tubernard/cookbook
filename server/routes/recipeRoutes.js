@@ -13,4 +13,6 @@ router.post('/', validate(recipeSchema), recipeController.addRecipe);
 
 router.put('/:id', recipeController.updateRecipe);
 
+router.delete('/:id', recipeController.deleteRecipe);
+
 export default router;
