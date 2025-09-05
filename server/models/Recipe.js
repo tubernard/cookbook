@@ -5,16 +5,20 @@ const ingredientSchema = new mongoose.Schema({
   quantity: { type: String, required: true, trim: true },
 });
 
-const recipeSchema = new mongoose.Schema({
-  name: { type: String, required: true, trim: true },
-  ingredients: [ingredientSchema],
-  instructions: { type: String, required: true, trim: true },
-  prepMinutes: { type: Number },
-  cookMinutes: { type: Number },
-  numServings: { type: Number },
-  image: { type: String },
-  createdAt: { type: Date, default: Date.now },
-});
+const recipeSchema = new mongoose.Schema(
+  {
+    name: { type: String, required: true, trim: true },
+    ingredients: [ingredientSchema],
+    instructions: { type: String, required: true, trim: true },
+    prepMinutes: { type: Number },
+    cookMinutes: { type: Number },
+    numServings: { type: Number },
+    image: { type: String },
+  },
+  {
+    timestamps: true,
+  },
+);
 
 const Recipe = mongoose.model('Recipe', recipeSchema);
 

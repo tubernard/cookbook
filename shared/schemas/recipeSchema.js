@@ -38,4 +38,6 @@ export const recipeSchema = z.object({
     ])
     .optional()
     .nullable(),
+  createdAt: z.string().optional(),
+  updatedAt: z.string().optional(),
 });

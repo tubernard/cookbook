@@ -1,11 +1,11 @@
 import { Title } from '@mantine/core';
-import AddRecipeForm from '../components/AddRecipeForm';
+import RecipeForm from '../components/RecipeForm';
 
 const AddRecipePage = () => {
   return (
     <>
       <Title order={2}>Add a New Recipe</Title>
-      <AddRecipeForm />
+      <RecipeForm />
     </>
   );
 };

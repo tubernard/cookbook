@@ -55,3 +55,39 @@ export const createRecipe = async (recipeData) => {
 
   return response.json();
 };
+
+/**
+ * Fetches a single recipe by its ID.
+ * @param {string} id The ID of the recipe.
+ * @returns {Promise<object>} The recipe object.
+ */
+export const getRecipeById = async (id) => {
+  const response = await fetch(`/api/recipes/${id}`);
+  if (!response.ok) {
+    throw new Error('Failed to fetch recipe.');
+  }
+  return response.json();
+};
+
+/**
+ * Updates an existing recipe.
+ * @param {string} id The ID of the recipe to update.
+ * @param {object} recipeData The updated recipe data.
+ * @returns {Promise<object>} The updated recipe object from the server.
+ */
+export const updateRecipe = async (id, recipeData) => {
+  const response = await fetch(`/api/recipes/${id}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(recipeData),
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json();
+    const error = new Error('Validation failed');
+    error.errors = errorData.errors;
+    throw error;
+  }
+
+  return response.json();
+};

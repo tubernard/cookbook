@@ -46,7 +46,7 @@ const Layout = () => {
         <NavLink
           label="Add Recipe"
           component={Link}
-          to="/add"
+          to="/recipes/add"
           leftSection={<IconPlus size="1rem" stroke={1.5} />}
           onClick={toggle}
         />

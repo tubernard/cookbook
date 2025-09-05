@@ -1,21 +1,27 @@
 import {
+  ActionIcon,
   Badge,
   Card,
   Center,
   Group,
   Image,
   List,
+  Menu,
   Text,
   ThemeIcon,
 } from '@mantine/core';
 import {
   IconCircleCheck,
   IconClock,
+  IconDots,
+  IconEdit,
   IconToolsKitchen2,
+  IconTrash,
   IconUsers,
 } from '@tabler/icons-react';
-import RecipeBoxLogo from './RecipeBoxLogo';
+import { Link } from 'react-router-dom';
 import { applyCloudinaryTransformation } from '../utils/cloudinary';
+import RecipeBoxLogo from './RecipeBoxLogo';
 
 const RecipeCard = ({ recipe }) => {
   const hasImage = recipe.image && recipe.image.trim() !== '';
@@ -39,9 +45,28 @@ const RecipeCard = ({ recipe }) => {
         )}
       </Card.Section>
       <Group justify="space-between" mt="md" mb="xs">
-        <Text fw={500} size="lg">
+        <Text fw={500} size="lg" truncate>
           {recipe.name}
         </Text>
+        <Menu shadow="md" width={200}>
+          <Menu.Target>
+            <ActionIcon variant="subtle" color="gray">
+              <IconDots size={16} />
+            </ActionIcon>
+          </Menu.Target>
+          <Menu.Dropdown>
+            <Menu.Item
+              leftSection={<IconEdit size={14} />}
+              component={Link}
+              to={`/recipes/edit/${recipe._id}`}
+            >
+              Edit Recipe
+            </Menu.Item>
+            <Menu.Item leftSection={<IconTrash size={14} />} color="red">
+              Delete Recipe
+            </Menu.Item>
+          </Menu.Dropdown>
+        </Menu>
       </Group>
 
       {(recipe.prepMinutes || recipe.cookMinutes || recipe.numServings) && (

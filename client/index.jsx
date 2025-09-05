@@ -10,6 +10,7 @@ import Layout from './components/Layout';
 import HomePage from './pages/HomePage';
 import RecipeListPage from './pages/RecipeListPage';
 import AddRecipePage from './pages/AddRecipePage';
+import EditRecipePage from './pages/EditRecipePage';
 
 const router = createBrowserRouter([
   {
@@ -25,8 +26,12 @@ const router = createBrowserRouter([
         element: <RecipeListPage />,
       },
       {
-        path: 'add',
+        path: 'recipes/add',
         element: <AddRecipePage />,
+      },
+      {
+        path: 'recipes/edit/:id',
+        element: <EditRecipePage />,
       },
     ],
   },

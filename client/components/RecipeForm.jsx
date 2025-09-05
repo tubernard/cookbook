@@ -16,7 +16,11 @@ import { IconCheck, IconTrash, IconUpload, IconX } from '@tabler/icons-react';
 import { zod4Resolver } from 'mantine-form-zod-resolver';
 import { useState } from 'react';
 import { recipeSchema } from '../../shared/schemas/recipeSchema.js';
-import { createRecipe, uploadImage } from '../services/apiService.js';
+import {
+  createRecipe,
+  updateRecipe,
+  uploadImage,
+} from '../services/apiService.js';
 
 const TextWithAstrisk = ({ children }) => (
   <Group gap="xs" mt="md">
@@ -33,17 +37,22 @@ const removeKey = ({ name, quantity }) => ({
   quantity,
 });
 
-const AddRecipeForm = () => {
+const RecipeForm = ({ recipe }) => {
   const [isLoading, setIsLoading] = useState(false);
+
+  const isEditMode = !!recipe;
+
   const form = useForm({
     initialValues: {
-      name: '',
-      ingredients: [{ name: '', quantity: '', key: randomId() }],
-      instructions: '',
-      prepMinutes: null,
-      cookMinutes: null,
-      numServings: null,
-      image: null,
+      name: recipe?.name || '',
+      ingredients: recipe?.ingredients || [
+        { name: '', quantity: '', key: randomId() },
+      ],
+      instructions: recipe?.instructions || '',
+      prepMinutes: recipe?.prepMinutes || null,
+      cookMinutes: recipe?.cookMinutes || null,
+      numServings: recipe?.numServings || null,
+      image: recipe?.image || null,
     },
 
     validate: zod4Resolver(recipeSchema),
@@ -76,8 +85,9 @@ const AddRecipeForm = () => {
   const handleSubmit = async (values) => {
     setIsLoading(true);
     try {
-      let imageUrl = null;
-      if (values.image) {
+      let imageUrl = recipe?.image || '';
+
+      if (values.image && typeof values.image !== 'string') {
         imageUrl = await uploadImage(values.image);
       }
 
@@ -87,13 +97,17 @@ const AddRecipeForm = () => {
         ingredients: values.ingredients.map(removeKey),
       };
 
-      await createRecipe(submissionData);
+      if (isEditMode) {
+        await updateRecipe(recipe._id, submissionData);
+      } else {
+        await createRecipe(submissionData);
+      }
 
       form.reset();
 
       notifications.show({
         title: 'Success!',
-        message: 'Your recipe has been saved.',
+        message: `Your recipe has been ${isEditMode ? 'updated' : 'saved'}.`,
         color: 'teal',
         icon: <IconCheck size="1.1rem" />,
       });
@@ -144,7 +158,11 @@ const AddRecipeForm = () => {
 
         <FileInput
           label="Recipe Image"
-          placeholder="Upload an image"
+          placeholder={
+            typeof form.values.image === 'string' && form.values.image
+              ? 'Change image'
+              : 'Upload an image'
+          }
           mt="md"
           leftSection={<IconUpload size={14} />}
           accept="image/png,image/jpeg"
@@ -178,11 +196,11 @@ const AddRecipeForm = () => {
         </Group>
 
         <Button type="submit" mt="xl" fullWidth loading={isLoading}>
-          Save Recipe
+          {isEditMode ? 'Update Recipe' : 'Save Recipe'}
         </Button>
       </form>
     </Box>
   );
 };
 
-export default AddRecipeForm;
+export default RecipeForm;

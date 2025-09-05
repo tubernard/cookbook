@@ -5,8 +5,12 @@ import { recipeSchema } from '../../shared/schemas/recipeSchema.js';
 
 const router = express.Router();
 
+router.get('/', recipeController.getRecipes);
+
+router.get('/:id', recipeController.getRecipeById);
+
 router.post('/', validate(recipeSchema), recipeController.addRecipe);
 
-router.get('/', recipeController.getRecipes);
+router.put('/:id', recipeController.updateRecipe);
 
 export default router;

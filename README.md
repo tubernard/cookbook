@@ -37,8 +37,6 @@ This project is currently an MVP and serves as a demonstration of core full-stac
 
 ## Getting Started
 
-To get a local copy up and running, follow these simple steps.
-
 ### Prerequisites
 
 - Node.js (v18 or later recommended)

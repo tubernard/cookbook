@@ -49,6 +49,10 @@ app.use((err, req, res, next) => {
       .json({ message: `Invalid ${err.path}: ${err.value}` });
   }
 
+  if (err.message) {
+    return res.status(500).json({ message: err.message });
+  }
+
   // Default to a 500 Internal Server Error
   res.status(500).json({ message: 'An unexpected error occurred' });
 });
