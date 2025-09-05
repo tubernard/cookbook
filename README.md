@@ -1,10 +1,10 @@
-# Recipe Box
+# 🥙 Recipe Box 🍝
 
-A modern, full-stack application for creating and managing a personal recipe collection.
+Love to cook but struggle to keep track of all your favorite recipes? Recipe-Box was created as an easy way to store, search, and find inspiration for new recipes!
 
-## Project Status: MVP & Work in Progress
+## Project Status
 
-This project is currently an MVP and serves as a demonstration of core full-stack features and is still under active development.
+This project is currently an MVP and serves as a demonstration of core full-stack features. It is still under active development.
 
 ## Technology Stack
 
@@ -15,11 +15,9 @@ This project is currently an MVP and serves as a demonstration of core full-stac
 - **Schema Validation:** Zod
 - **Monorepo:** npm Workspaces
 
-## Features & Implementation
+## Features
 
-This section details the current features and how the technology stack was used to implement them.
-
-### Core Features (Implemented)
+### Implemented
 
 - **Dynamic Recipe Forms & Display**
   - Users can add new recipes through a dynamic form and view the entire collection in a responsive grid.
@@ -32,9 +30,7 @@ This section details the current features and how the technology stack was used 
 - **Optimized Image Delivery**
   - Utilizes Cloudinary transformations to serve optimized images for different parts of the UI (e.g., thumbnails), ensuring fast load times and a smooth user experience.
 
-### Upcoming Features
-
-I am actively working on the following major features:
+### Upcoming
 
 - **User Authentication:** Implementing login, registration, and session management so users can have their own private recipe collections.
 - **AI-Powered Suggestions:** Integrating a Large Language Model (LLM) to generate new recipe ideas that users can edit and save.
