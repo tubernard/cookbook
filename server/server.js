@@ -6,6 +6,10 @@ import { fileURLToPath } from 'url';
 import connectDB from './db/connection.js';
 import recipeRoutes from './routes/recipeRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js';
+import userRoutes from './routes/userRoutes.js';
+import session from 'express-session';
+import MongoStore from 'connect-mongo';
+import isAuthenticated from './middleware/authenticate.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -23,8 +27,24 @@ cloudinary.config({
 
 app.use(express.json());
 
-app.use('/api/recipes', recipeRoutes);
-app.use('/api/upload', uploadRoutes);
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI,
+      collectionName: 'sessions',
+    }),
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24, // 1 day
+    },
+  }),
+);
+
+app.use('/api/users', userRoutes);
+app.use('/api/recipes', isAuthenticated, recipeRoutes);
+app.use('/api/upload', isAuthenticated, uploadRoutes);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '../dist')));

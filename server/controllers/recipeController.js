@@ -13,7 +13,7 @@ recipeController.getRecipeById = async (req, res, next) => {
   } catch (err) {
     return next({
       log: `Error in recipeController.getRecipeById: ${err}`,
-      message: { err: 'An error occurred while getting the recipe.' },
+      message: 'An error occurred while getting the recipe.',
     });
   }
 };
@@ -25,7 +25,7 @@ recipeController.getRecipes = async (req, res, next) => {
   } catch (err) {
     return next({
       log: `Error in recipeController.getRecipes: ${err}`,
-      message: { err: 'An error occurred while retrieving the recipes.' },
+      message: 'An error occurred while retrieving the recipes.',
     });
   }
 };
@@ -39,7 +39,7 @@ recipeController.addRecipe = async (req, res, next) => {
   } catch (err) {
     return next({
       log: `Error in recipeController.addRecipe: ${err}`,
-      message: { err: 'An error occurred while adding the recipe.' },
+      message: 'An error occurred while adding the recipe.',
     });
   }
 };
@@ -60,7 +60,7 @@ recipeController.updateRecipe = async (req, res, next) => {
   } catch (err) {
     return next({
       log: `Error in recipeController.updateRecipe: ${err}`,
-      message: { err: 'An error occurred updating the recipe.' },
+      message: 'An error occurred updating the recipe.',
     });
   }
 };
@@ -76,7 +76,7 @@ recipeController.deleteRecipe = async (req, res, next) => {
   } catch (err) {
     return next({
       log: `Error in recipeController.deleteRecipe: ${err}`,
-      message: { err: 'An error occurred while deleting the recipe.' },
+      message: 'An error occurred while deleting the recipe.',
     });
   }
 };
