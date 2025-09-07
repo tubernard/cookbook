@@ -4,7 +4,10 @@ const recipeController = {};
 
 recipeController.getRecipeById = async (req, res, next) => {
   try {
-    const recipe = await Recipe.findById(req.params.id);
+    const recipe = await Recipe.findOne({
+      _id: req.params.id,
+      user: req.session.userId,
+    });
     if (!recipe) {
       return res.status(404).json({ message: 'Recipe not found' });
     }
@@ -19,10 +22,8 @@ recipeController.getRecipeById = async (req, res, next) => {
 };
 
 recipeController.getRecipes = async (req, res, next) => {
-  const userId = req.session.userId;
-
   try {
-    const recipes = await Recipe.find({ userId });
+    const recipes = await Recipe.find({ user: req.session.userId });
     res.status(200).json(recipes);
   } catch (err) {
     return next({
@@ -33,9 +34,8 @@ recipeController.getRecipes = async (req, res, next) => {
 };
 
 recipeController.addRecipe = async (req, res, next) => {
-  const userId = req.session.userId;
   try {
-    const newRecipe = new Recipe({ ...req.body, userId });
+    const newRecipe = new Recipe({ ...req.body, user: req.session.userId });
     const savedRecipe = await newRecipe.save();
 
     res.status(201).json(savedRecipe);
@@ -49,8 +49,8 @@ recipeController.addRecipe = async (req, res, next) => {
 
 recipeController.updateRecipe = async (req, res, next) => {
   try {
-    const updatedRecipe = await Recipe.findByIdAndUpdate(
-      req.params.id,
+    const updatedRecipe = await Recipe.findOneAndUpdate(
+      { _id: req.params.id, user: req.session.userId },
       req.body,
       { new: true, runValidators: true },
     );
@@ -70,7 +70,10 @@ recipeController.updateRecipe = async (req, res, next) => {
 
 recipeController.deleteRecipe = async (req, res, next) => {
   try {
-    const deletedRecipe = await Recipe.findByIdAndDelete(req.params.id);
+    const deletedRecipe = await Recipe.findOneAndDelete({
+      _id: req.params.id,
+      user: req.session.userId,
+    });
 
     if (!deletedRecipe) {
       return res.status(404).json({ message: 'Recipe not found' });
