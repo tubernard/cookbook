@@ -27,4 +27,6 @@ router.post(
 
 router.post('/logout', sessionController.endSession);
 
+router.get('/session', sessionController.checkSession);
+
 export default router;

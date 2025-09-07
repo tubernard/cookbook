@@ -10,7 +10,6 @@ import {
   Textarea,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { randomId } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { IconCheck, IconTrash, IconUpload, IconX } from '@tabler/icons-react';
 import { zod4Resolver } from 'mantine-form-zod-resolver';
@@ -21,6 +20,7 @@ import {
   updateRecipe,
   uploadImage,
 } from '../services/apiService.js';
+import { randomId } from '@mantine/hooks';
 
 const TextWithAstrisk = ({ children }) => (
   <Group gap="xs" mt="md">
@@ -32,29 +32,24 @@ const TextWithAstrisk = ({ children }) => (
     </Text>
   </Group>
 );
-const removeKey = ({ name, quantity }) => ({
-  name,
-  quantity,
-});
 
 const RecipeForm = ({ recipe }) => {
   const [isLoading, setIsLoading] = useState(false);
-
   const isEditMode = !!recipe;
 
   const form = useForm({
     initialValues: {
       name: recipe?.name || '',
-      ingredients: recipe?.ingredients || [
-        { name: '', quantity: '', key: randomId() },
-      ],
+      ingredients: recipe?.ingredients.map((item) => ({
+        ...item,
+        key: randomId(),
+      })) || [{ name: '', quantity: '', key: randomId() }],
       instructions: recipe?.instructions || '',
-      prepMinutes: recipe?.prepMinutes || null,
-      cookMinutes: recipe?.cookMinutes || null,
-      numServings: recipe?.numServings || null,
+      prepMinutes: recipe?.prepMinutes || '',
+      cookMinutes: recipe?.cookMinutes || '',
+      numServings: recipe?.numServings || '',
       image: recipe?.image || null,
     },
-
     validate: zod4Resolver(recipeSchema),
   });
 
@@ -75,7 +70,7 @@ const RecipeForm = ({ recipe }) => {
       <ActionIcon
         color="red"
         onClick={() => form.removeListItem('ingredients', index)}
-        disabled={index < 1}
+        disabled={form.values.ingredients.length === 1}
       >
         <IconTrash size="1rem" />
       </ActionIcon>
@@ -94,7 +89,6 @@ const RecipeForm = ({ recipe }) => {
       const submissionData = {
         ...values,
         image: imageUrl,
-        ingredients: values.ingredients.map(removeKey),
       };
 
       if (isEditMode) {

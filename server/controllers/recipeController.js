@@ -19,8 +19,10 @@ recipeController.getRecipeById = async (req, res, next) => {
 };
 
 recipeController.getRecipes = async (req, res, next) => {
+  const userId = req.session.userId;
+
   try {
-    const recipes = await Recipe.find();
+    const recipes = await Recipe.find({ userId });
     res.status(200).json(recipes);
   } catch (err) {
     return next({
@@ -31,8 +33,9 @@ recipeController.getRecipes = async (req, res, next) => {
 };
 
 recipeController.addRecipe = async (req, res, next) => {
+  const userId = req.session.userId;
   try {
-    const newRecipe = new Recipe(req.body);
+    const newRecipe = new Recipe({ ...req.body, userId });
     const savedRecipe = await newRecipe.save();
 
     res.status(201).json(savedRecipe);

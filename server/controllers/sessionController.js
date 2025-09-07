@@ -17,4 +17,11 @@ sessionController.endSession = (req, res) => {
   });
 };
 
+sessionController.checkSession = (req, res) => {
+  if (req.session.userId) {
+    return res.status(200).json({ userId: req.session.userId });
+  }
+  return res.status(401).json({ message: 'No active session' });
+};
+
 export default sessionController;

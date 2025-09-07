@@ -108,3 +108,63 @@ export const deleteRecipe = async (id) => {
 
   return response.json();
 };
+
+/**
+ * Signs up a new user.
+ * @param {object} credentials The user's credentials { username, password }.
+ * @returns {Promise<object>} The new user object.
+ */
+export const signup = async (credentials) => {
+  const response = await fetch('api/users/signup', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(credentials),
+  });
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || 'Signup failed.');
+  }
+  return response.json();
+};
+
+/**
+ * Logs in a user.
+ * @param {object} credentials The user's credentials { username, password }.
+ * @returns {Promise<object>} The user object.
+ */
+export const login = async (credentials) => {
+  const response = await fetch('/api/users/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(credentials),
+  });
+  if (!response.ok) {
+    const errorData = await response.json();
+    throw new Error(errorData.message || 'Login failed.');
+  }
+  return response.json();
+};
+
+/**
+ * Logs out the current user.
+ * @returns {Promise<object>} The success message.
+ */
+export const logout = async () => {
+  const response = await fetch('/api/users/logout', { method: 'POST' });
+  if (!response.ok) {
+    throw new Error('Logout failed.');
+  }
+  return response.json();
+};
+
+/**
+ * Checks if a user session is active.
+ * @returns {Promise<object|null>} The user object if logged in, otherwise null.
+ */
+export const checkSession = async () => {
+  const response = await fetch('/api/users/session');
+  if (response.ok) {
+    return response.json();
+  }
+  return null;
+};

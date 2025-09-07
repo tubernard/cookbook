@@ -20,10 +20,31 @@ export const recipeSchema = z.object({
     .min(1, { message: 'At least one ingredient is required.' }),
   instructions: z.string().min(1, { message: 'Instructions are required.' }),
 
-  // Optional fields
-  prepMinutes: z.number().min(0).optional().nullable(),
-  cookMinutes: z.number().min(0).optional().nullable(),
-  numServings: z.number().min(0).optional().nullable(),
+  prepMinutes: z.preprocess(
+    (val) => (val === '' ? undefined : val),
+    z.coerce
+      .number({ invalid_type_error: 'Must be a number' })
+      .min(0, "Prep time can't be negative")
+      .optional()
+      .nullable(),
+  ),
+  cookMinutes: z.preprocess(
+    (val) => (val === '' ? undefined : val),
+    z.coerce
+      .number({ invalid_type_error: 'Must be a number' })
+      .min(0, "Cook time can't be negative")
+      .optional()
+      .nullable(),
+  ),
+  numServings: z.preprocess(
+    (val) => (val === '' ? undefined : val),
+    z.coerce
+      .number({ invalid_type_error: 'Must be a number' })
+      .min(0, "Servings can't be negative")
+      .optional()
+      .nullable(),
+  ),
+
   // image schema is a union between a URL string on the backend and File type object on the frontend
   image: z
     .union([

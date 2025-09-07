@@ -7,6 +7,7 @@ const ingredientSchema = new mongoose.Schema({
 
 const recipeSchema = new mongoose.Schema(
   {
+    userId: { type: String, required: true },
     name: { type: String, required: true, trim: true },
     ingredients: [ingredientSchema],
     instructions: { type: String, required: true, trim: true },

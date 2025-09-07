@@ -12,11 +12,21 @@ import RecipeListPage from './pages/RecipeListPage';
 import AddRecipePage from './pages/AddRecipePage';
 import EditRecipePage from './pages/EditRecipePage';
 import { ModalsProvider } from '@mantine/modals';
+import { AuthProvider } from './context/AuthContext';
+import SignUpPage from './pages/SignUpPage';
+import LoginPage from './pages/LoginPage';
+import ProtectedRoute from './components/ProtectedRoute';
 
 const router = createBrowserRouter([
+  { path: 'signup', element: <SignUpPage /> },
+  { path: 'login', element: <LoginPage /> },
   {
     path: '/',
-    element: <Layout />,
+    element: (
+      <ProtectedRoute>
+        <Layout />
+      </ProtectedRoute>
+    ),
     children: [
       {
         index: true,
@@ -46,7 +56,9 @@ root.render(
     <MantineProvider>
       <ModalsProvider>
         <Notifications />
-        <RouterProvider router={router} />
+        <AuthProvider>
+          <RouterProvider router={router} />
+        </AuthProvider>
       </ModalsProvider>
     </MantineProvider>
   </React.StrictMode>,
