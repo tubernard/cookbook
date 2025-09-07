@@ -2,19 +2,26 @@ import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import eslint from 'vite-plugin-eslint';
 
-// https://vitejs.dev/config/
-export default defineConfig({
-  plugins: [react(), eslint()],
-  server: {
-    port: 3000,
-    proxy: {
-      '/api': {
-        target: 'http://localhost:3001',
-        changeOrigin: true,
+export default defineConfig(({ command }) => {
+  if (command === 'serve') {
+    return {
+      plugins: [react(), eslint()],
+      server: {
+        proxy: {
+          '/api': {
+            target: 'http://localhost:3001',
+            changeOrigin: true,
+            secure: false,
+          },
+        },
       },
-    },
-  },
-  build: {
-    outDir: './dist',
-  },
+    };
+  } else {
+    return {
+      plugins: [react()],
+      build: {
+        outDir: 'dist',
+      },
+    };
+  }
 });
