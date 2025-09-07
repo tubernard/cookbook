@@ -85,7 +85,7 @@ const Layout = () => {
                 to="/"
                 style={{ textDecoration: 'none' }}
               >
-                Recipe Box
+                Cookbook
               </Title>
               <Group gap="xs" visibleFrom="sm" ml="xl">
                 {desktopLinks}

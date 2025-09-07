@@ -14,11 +14,11 @@ const HomePage = () => {
           marginBottom: theme.spacing.md,
         }}
       >
-        Welcome to Your Personal Recipe Box
+        Welcome to Your Personal Cookbook
       </Title>
       <Text size="lg" c="dimmed" maw={600} mx="auto">
         All your favorite recipes, organized in one place. Easily add, edit, and
-        find the meals you love to cook.
+        find the meals you love to make.
       </Text>
       <Button component={Link} to="/recipes" size="lg" mt="xl">
         View My Recipes

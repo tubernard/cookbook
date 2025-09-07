@@ -1,46 +1,48 @@
 import { createTheme } from '@mantine/core';
 
 const themeColors = {
-  'brand-blue': [
-    '#e6f7ff',
-    '#bae7ff',
-    '#91d5ff',
-    '#69c0ff',
-    '#40a9ff',
-    '#1890ff',
-    '#096dd9',
-    '#0050b3',
-    '#003a8c',
-    '#002766',
+  'brand-orange': [
+    '#fff4e6',
+    '#ffe0c2',
+    '#ffc99b',
+    '#ffb172',
+    '#ff994a',
+    '#ff8a30',
+    '#f07928',
+    '#d66820',
+    '#bf5b1b',
+    '#a84e15',
   ],
-  'brand-violet': [
-    '#f3e6ff',
-    '#d9bae7',
-    '#c08ddb',
-    '#a761cf',
-    '#8f34c3',
-    '#7c1ab8',
-    '#690aa2',
-    '#560689',
-    '#43046f',
-    '#310256',
+
+  'brand-red': [
+    '#ffeae6',
+    '#ffd0c2',
+    '#ffb39b',
+    '#ff9572',
+    '#ff774a',
+    '#ff6530',
+    '#f05a28',
+    '#d64d20',
+    '#bf431b',
+    '#a83915',
   ],
 };
 
 export const theme = createTheme({
   fontFamily: "'Manrope', sans-serif",
-  primaryColor: 'brand-blue',
+  primaryColor: 'brand-orange',
   colors: themeColors,
 
   other: {
-    gradient: 'linear-gradient(45deg, #096dd9 0%, #690aa2 100%)',
+    gradient: 'linear-gradient(45deg, #ff8a30 0%, #d64d20 100%)',
   },
 
   components: {
     Button: {
       defaultProps: {
         variant: 'gradient',
-        gradient: { from: 'brand-blue.6', to: 'brand-violet.6' },
+
+        gradient: { from: 'brand-orange.5', to: 'brand-red.6' },
       },
     },
     Paper: {

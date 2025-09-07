@@ -1,9 +1,9 @@
 body {
-  background-color: #f9f9fd;
+  background-color: #fdfaf8;
   background-image:
-    radial-gradient(at 10% 20%, hsla(255, 90%, 85%, 0.4) 0px, transparent 50%),
-    radial-gradient(at 80% 15%, hsla(210, 100%, 80%, 0.3) 0px, transparent 50%),
-    radial-gradient(at 70% 85%, hsla(340, 90%, 85%, 0.3) 0px, transparent 50%);
+    radial-gradient(at 10% 20%, hsla(30, 90%, 85%, 0.5) 0px, transparent 50%),
+    radial-gradient(at 80% 15%, hsla(15, 80%, 80%, 0.4) 0px, transparent 50%),
+    radial-gradient(at 70% 85%, hsla(40, 90%, 85%, 0.4) 0px, transparent 50%);
 
   color: #111;
   min-height: 100vh;

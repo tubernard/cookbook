@@ -90,7 +90,6 @@ const RecipeCard = ({ recipe, onDelete }) => {
         </Menu>
       </Group>
 
-      {/* Use a consistent, neutral color for all badges */}
       {(recipe.prepMinutes || recipe.cookMinutes || recipe.numServings) && (
         <Group mt="sm" mb="sm" gap="xs">
           {recipe.prepMinutes && (
