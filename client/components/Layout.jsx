@@ -14,31 +14,13 @@ import { useAuth } from '../context/AuthContext';
 
 const Layout = () => {
   const [opened, { toggle }] = useDisclosure();
-  const { user, logout } = useAuth();
+  const { logout } = useAuth();
   const navigate = useNavigate();
-
-  console.log(user);
 
   const handleLogout = async () => {
     await logout();
     navigate('/'); // Redirect to home page after logout
   };
-
-  const UserControls = () =>
-    user ? (
-      <Button variant="default" onClick={handleLogout}>
-        Log out
-      </Button>
-    ) : (
-      <>
-        <Button variant="default" component={Link} to="/login">
-          Log In
-        </Button>
-        <Button component={Link} to="/signup">
-          Sign Up
-        </Button>
-      </>
-    );
 
   return (
     <AppShell
@@ -59,7 +41,9 @@ const Layout = () => {
               <Text fw={700}>Recipe Box</Text>
             </UnstyledButton>
           </Group>
-          <UserControls />
+          <Button variant="default" onClick={handleLogout}>
+            Log out
+          </Button>
         </Group>
       </AppShell.Header>
 
