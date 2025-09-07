@@ -42,7 +42,7 @@ const EditRecipePage = () => {
 
   return (
     <>
-      <Title order={2} mb="xl">
+      <Title order={2} mb="xl" ta="center">
         Edit Recipe
       </Title>
       {recipe && <RecipeForm recipe={recipe} />}

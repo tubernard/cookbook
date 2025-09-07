@@ -5,6 +5,7 @@ import {
   FileInput,
   Group,
   NumberInput,
+  Paper,
   Text,
   TextInput,
   Textarea,
@@ -120,79 +121,81 @@ const RecipeForm = ({ recipe }) => {
   };
 
   return (
-    <Box maw={500} mx="auto">
-      <form onSubmit={form.onSubmit(handleSubmit)}>
-        <TextInput
-          withAsterisk
-          label="Recipe Name"
-          placeholder="Spaghetti Bolognese"
-          {...form.getInputProps('name')}
-        />
-
-        <Group grow mt="md">
-          <NumberInput
-            label="Prep Time (mins)"
-            placeholder="15"
-            min={0}
-            {...form.getInputProps('prepMinutes')}
+    <Box maw={700} mx="auto">
+      <Paper p="xl" radius="md">
+        <form onSubmit={form.onSubmit(handleSubmit)}>
+          <TextInput
+            withAsterisk
+            label="Recipe Name"
+            placeholder="Spaghetti Bolognese"
+            {...form.getInputProps('name')}
           />
-          <NumberInput
-            label="Cook Time (mins)"
-            placeholder="30"
-            min={0}
-            {...form.getInputProps('cookMinutes')}
-          />
-          <NumberInput
-            label="Servings"
-            placeholder="4"
-            min={0}
-            {...form.getInputProps('numServings')}
-          />
-        </Group>
 
-        <FileInput
-          label="Recipe Image"
-          placeholder={
-            typeof form.values.image === 'string' && form.values.image
-              ? 'Change image'
-              : 'Upload an image'
-          }
-          mt="md"
-          leftSection={<IconUpload size={14} />}
-          accept="image/png,image/jpeg"
-          {...form.getInputProps('image')}
-        />
+          <Group grow mt="md">
+            <NumberInput
+              label="Prep Time (mins)"
+              placeholder="15"
+              min={0}
+              {...form.getInputProps('prepMinutes')}
+            />
+            <NumberInput
+              label="Cook Time (mins)"
+              placeholder="30"
+              min={0}
+              {...form.getInputProps('cookMinutes')}
+            />
+            <NumberInput
+              label="Servings"
+              placeholder="4"
+              min={0}
+              {...form.getInputProps('numServings')}
+            />
+          </Group>
 
-        <Textarea
-          withAsterisk
-          label="Instructions"
-          placeholder="1. Boil water..."
-          mt="md"
-          {...form.getInputProps('instructions')}
-        />
-
-        <TextWithAstrisk>Ingredients</TextWithAstrisk>
-        {ingredientFields}
-
-        <Group justify="center" mt="md">
-          <Button
-            variant="default"
-            onClick={() =>
-              form.insertListItem('ingredients', {
-                name: '',
-                quantity: '',
-                key: randomId(),
-              })
+          <FileInput
+            label="Recipe Image"
+            placeholder={
+              typeof form.values.image === 'string' && form.values.image
+                ? 'Change image'
+                : 'Upload an image'
             }
-          >
-            Add Ingredient
-          </Button>
-        </Group>
+            mt="md"
+            leftSection={<IconUpload size={14} />}
+            accept="image/png,image/jpeg"
+            {...form.getInputProps('image')}
+          />
 
-        <Button type="submit" mt="xl" fullWidth loading={isLoading}>
-          {isEditMode ? 'Update Recipe' : 'Save Recipe'}
-        </Button>
-      </form>
+          <Textarea
+            withAsterisk
+            label="Instructions"
+            placeholder="1. Boil water..."
+            mt="md"
+            {...form.getInputProps('instructions')}
+          />
+
+          <TextWithAstrisk>Ingredients</TextWithAstrisk>
+          {ingredientFields}
+
+          <Group justify="center" mt="md">
+            <Button
+              variant="default"
+              onClick={() =>
+                form.insertListItem('ingredients', {
+                  name: '',
+                  quantity: '',
+                  key: `new-${Date.now()}`,
+                })
+              }
+            >
+              Add Ingredient
+            </Button>
+          </Group>
+
+          <Button type="submit" mt="xl" fullWidth loading={isLoading}>
+            {isEditMode ? 'Update Recipe' : 'Save Recipe'}
+          </Button>
+        </form>
+      </Paper>
     </Box>
   );
 };

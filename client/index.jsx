@@ -1,21 +1,23 @@
+import { MantineProvider } from '@mantine/core';
+import '@mantine/core/styles.css';
+import { ModalsProvider } from '@mantine/modals';
+import { Notifications } from '@mantine/notifications';
+import '@mantine/notifications/styles.css';
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { MantineProvider } from '@mantine/core';
-import { Notifications } from '@mantine/notifications';
-import '@mantine/core/styles.css';
-import '@mantine/notifications/styles.css';
-
 import Layout from './components/Layout';
-import HomePage from './pages/HomePage';
-import RecipeListPage from './pages/RecipeListPage';
+import ProtectedRoute from './components/ProtectedRoute';
+import { AuthProvider } from './context/AuthContext';
 import AddRecipePage from './pages/AddRecipePage';
 import EditRecipePage from './pages/EditRecipePage';
-import { ModalsProvider } from '@mantine/modals';
-import { AuthProvider } from './context/AuthContext';
-import SignUpPage from './pages/SignUpPage';
+import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
-import ProtectedRoute from './components/ProtectedRoute';
+import RecipeListPage from './pages/RecipeListPage';
+import SignUpPage from './pages/SignUpPage';
+import { theme } from './theme';
+
+import './styles.css';
 
 const router = createBrowserRouter([
   { path: 'signup', element: <SignUpPage /> },
@@ -53,7 +55,7 @@ const root = createRoot(container);
 
 root.render(
   <React.StrictMode>
-    <MantineProvider>
+    <MantineProvider theme={theme}>
       <ModalsProvider>
         <Notifications />
         <AuthProvider>

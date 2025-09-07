@@ -1,28 +1,28 @@
 import {
+  Card,
+  Image,
+  Text,
+  Group,
+  Menu,
   ActionIcon,
   Badge,
-  Card,
-  Center,
-  Group,
-  Image,
   List,
-  Menu,
-  Text,
   ThemeIcon,
+  Center,
 } from '@mantine/core';
-import {
-  IconCircleCheck,
-  IconClock,
-  IconDots,
-  IconEdit,
-  IconToolsKitchen2,
-  IconTrash,
-  IconUsers,
-} from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
+import {
+  IconPencil,
+  IconTrash,
+  IconDotsVertical,
+  IconClock,
+  IconToolsKitchen,
+  IconUsers,
+  IconCircleCheck,
+} from '@tabler/icons-react';
+import { useModals } from '@mantine/modals';
 import { applyCloudinaryTransformation } from '../utils/cloudinary';
 import RecipeBoxLogo from './RecipeBoxLogo';
-import { useModals } from '@mantine/modals';
 
 const RecipeCard = ({ recipe, onDelete }) => {
   const modals = useModals();
@@ -56,8 +56,8 @@ const RecipeCard = ({ recipe, onDelete }) => {
             alt={`Image of ${recipe.name}`}
           />
         ) : (
-          <Center h={180} bg="gray.1">
-            <RecipeBoxLogo style={{ height: 100, width: 100 }} />
+          <Center h={180} bg="rgba(0, 0, 0, 0.05)">
+            <RecipeBoxLogo style={{ height: 100, width: 100, opacity: 0.5 }} />
           </Center>
         )}
       </Card.Section>
@@ -65,15 +65,15 @@ const RecipeCard = ({ recipe, onDelete }) => {
         <Text fw={500} size="lg" truncate>
           {recipe.name}
         </Text>
-        <Menu shadow="md" width={200}>
+        <Menu shadow="md" width={200} withinPortal>
           <Menu.Target>
             <ActionIcon variant="subtle" color="gray">
-              <IconDots size={16} />
+              <IconDotsVertical size={16} />
             </ActionIcon>
           </Menu.Target>
           <Menu.Dropdown>
             <Menu.Item
-              leftSection={<IconEdit size={14} />}
+              leftSection={<IconPencil size={14} />}
               component={Link}
               to={`/recipes/edit/${recipe._id}`}
             >
@@ -82,7 +82,7 @@ const RecipeCard = ({ recipe, onDelete }) => {
             <Menu.Item
               leftSection={<IconTrash size={14} />}
               color="red"
-              onClick={openDeleteModal} // Call the modal function on click
+              onClick={openDeleteModal}
             >
               Delete Recipe
             </Menu.Item>
@@ -90,12 +90,13 @@ const RecipeCard = ({ recipe, onDelete }) => {
         </Menu>
       </Group>
 
+      {/* Use a consistent, neutral color for all badges */}
       {(recipe.prepMinutes || recipe.cookMinutes || recipe.numServings) && (
         <Group mt="sm" mb="sm" gap="xs">
           {recipe.prepMinutes && (
             <Badge
               variant="light"
-              color="blue"
+              color="gray"
               leftSection={<IconClock size={14} />}
             >
               Prep: {recipe.prepMinutes} min
@@ -104,8 +105,8 @@ const RecipeCard = ({ recipe, onDelete }) => {
           {recipe.cookMinutes && (
             <Badge
               variant="light"
-              color="grape"
-              leftSection={<IconToolsKitchen2 size={14} />}
+              color="gray"
+              leftSection={<IconToolsKitchen size={14} />}
             >
               Cook: {recipe.cookMinutes} min
             </Badge>
@@ -113,7 +114,7 @@ const RecipeCard = ({ recipe, onDelete }) => {
           {recipe.numServings && (
             <Badge
               variant="light"
-              color="orange"
+              color="gray"
               leftSection={<IconUsers size={14} />}
             >
               Serves {recipe.numServings}
@@ -122,7 +123,7 @@ const RecipeCard = ({ recipe, onDelete }) => {
         </Group>
       )}
 
-      <Text size="sm" c="dimmed" mt="sm">
+      <Text size="sm" c="dimmed" mt="sm" lineClamp={3}>
         {recipe.instructions}
       </Text>
 
@@ -135,7 +136,7 @@ const RecipeCard = ({ recipe, onDelete }) => {
         center
         mt="xs"
         icon={
-          <ThemeIcon color="teal" size={16} radius="xl">
+          <ThemeIcon size={16} radius="xl">
             <IconCircleCheck size="0.8rem" />
           </ThemeIcon>
         }

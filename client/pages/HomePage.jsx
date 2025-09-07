@@ -1,14 +1,29 @@
-// filepath: client/pages/HomePage.jsx
-import { Title, Text } from '@mantine/core';
+import { Title, Text, Button, Container, useMantineTheme } from '@mantine/core';
+import { Link } from 'react-router-dom';
 
 const HomePage = () => {
+  const theme = useMantineTheme();
+
   return (
-    <>
-      <Title order={1}>Welcome to Your Recipe Box</Title>
-      <Text mt="md">
-        Use the navigation to add a new recipe or view your existing collection.
+    <Container size="lg" style={{ textAlign: 'center', paddingTop: '10vh' }}>
+      <Title
+        order={1}
+        style={{
+          fontSize: 'clamp(2.5rem, 5vw, 4rem)',
+          background: theme.other.gradient,
+          marginBottom: theme.spacing.md,
+        }}
+      >
+        Welcome to Your Personal Recipe Box
+      </Title>
+      <Text size="lg" c="dimmed" maw={600} mx="auto">
+        All your favorite recipes, organized in one place. Easily add, edit, and
+        find the meals you love to cook.
       </Text>
-    </>
+      <Button component={Link} to="/recipes" size="lg" mt="xl">
+        View My Recipes
+      </Button>
+    </Container>
   );
 };
 

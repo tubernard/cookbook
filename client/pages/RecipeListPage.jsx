@@ -47,7 +47,6 @@ const RecipeListPage = () => {
   const handleDelete = async (id) => {
     try {
       await deleteRecipe(id);
-      // Remove the deleted recipe from the local state to update the UI
       setRecipes((prevRecipes) => prevRecipes.filter((r) => r._id !== id));
       notifications.show({
         title: 'Success!',
@@ -83,7 +82,7 @@ const RecipeListPage = () => {
 
   return (
     <>
-      <Title order={2} mb="xl">
+      <Title order={2} mb="xl" ta="center">
         All Recipes
       </Title>
 
