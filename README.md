@@ -1,10 +1,10 @@
-# 🥙 Recipe Box 🍝
+# Cookbook
 
-Love to cook but struggle to keep track of all your favorite recipes? Recipe-Box was created as an easy way to store, search, and find inspiration for new recipes!
+Love to cook but struggle to keep track of all your favorite recipes? Cookbook was created as an easy way to store, search, and find inspiration for new recipes!
 
 ## Project Status
 
-This project is currently an MVP and serves as a demonstration of core full-stack features. It is still under active development.
+This project is an MVP and serves as a demonstration of core full-stack features. It is still under active development.
 
 ## Technology Stack
 
