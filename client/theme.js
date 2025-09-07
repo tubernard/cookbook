@@ -113,5 +113,18 @@ export const theme = createTheme({
         },
       },
     },
+
+    Modal: {
+      styles: {
+        content: {
+          backgroundColor: 'rgba(92, 138, 77, 0.6)',
+          backdropFilter: 'blur(10px)',
+          borderColor: 'rgba(255, 255, 255, 0.8)',
+        },
+        header: {
+          backgroundColor: 'transparent',
+        },
+      },
+    },
   },
 });
