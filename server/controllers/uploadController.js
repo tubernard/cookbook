@@ -5,8 +5,10 @@ const uploadController = {};
 uploadController.signUpload = (req, res) => {
   const timestamp = Math.round(new Date().getTime() / 1000);
 
-  // Placeholder for user specific subfolders once login is added
-  const folder = `recipe_box/development`;
+  const environment = process.env.NODE_ENV === 'production' ? 'prod' : 'dev';
+  const userId = req.session.userId;
+  const folder = `cookbook/${environment}/${userId}`;
+
   const uploadPreset = process.env.CLOUDINARY_UPLOAD_PRESET;
 
   try {
