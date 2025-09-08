@@ -47,15 +47,15 @@ app.use('/api/users', userRoutes);
 app.use('/api/recipes', isAuthenticated, recipeRoutes);
 app.use('/api/upload', isAuthenticated, uploadRoutes);
 
-// Static React Routes
-if (process.env.NODE_ENV === 'production') {
-  const clientDistPath = path.join(__dirname, '../client/dist');
-  app.use(express.static(clientDistPath));
+// // Static React Routes
+// if (process.env.NODE_ENV === 'production') {
+//   const clientDistPath = path.join(__dirname, '../client/dist');
+//   app.use(express.static(clientDistPath));
 
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(clientDistPath, 'index.html'));
-  });
-}
+//   app.get('*', (req, res) => {
+//     res.sendFile(path.join(clientDistPath, 'index.html'));
+//   });
+// }
 
 // Centralized error handling middleware
 app.use((err, req, res, next) => {
@@ -84,3 +84,5 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Server is listening on http://localhost:${PORT}`);
 });
+
+export default app;
