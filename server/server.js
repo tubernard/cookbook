@@ -1,8 +1,6 @@
 import './loadEnvironment.cjs';
 import { v2 as cloudinary } from 'cloudinary';
 import express from 'express';
-import path from 'path';
-import { fileURLToPath } from 'url';
 import connectDB from './db/connection.js';
 import recipeRoutes from './routes/recipeRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js';
@@ -10,9 +8,6 @@ import userRoutes from './routes/userRoutes.js';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import isAuthenticated from './middleware/authenticate.js';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = 3001;
@@ -37,6 +32,8 @@ app.use(
       collectionName: 'sessions',
     }),
     cookie: {
+      secure: process.env.NODE_ENV === 'production',
+      httpOnly: true,
       maxAge: 1000 * 60 * 60 * 24, // 1 day
     },
   }),
@@ -46,16 +43,6 @@ app.use(
 app.use('/api/users', userRoutes);
 app.use('/api/recipes', isAuthenticated, recipeRoutes);
 app.use('/api/upload', isAuthenticated, uploadRoutes);
-
-// // Static React Routes
-// if (process.env.NODE_ENV === 'production') {
-//   const clientDistPath = path.join(__dirname, '../client/dist');
-//   app.use(express.static(clientDistPath));
-
-//   app.get('*', (req, res) => {
-//     res.sendFile(path.join(clientDistPath, 'index.html'));
-//   });
-// }
 
 // Centralized error handling middleware
 app.use((err, req, res, next) => {
