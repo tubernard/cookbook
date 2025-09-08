@@ -1,21 +1,25 @@
+import axios from 'axios';
+
+const api = axios.create({
+  baseURL: import.meta.env.VITE_VERCEL_URL || '/',
+  withCredentials: true,
+});
+
 /**
  * Uploads a file to Cloudinary using a signed upload flow.
  * @param {File} file The file object from the form input.
  * @returns {Promise<string>} The secure URL of the uploaded image.
  */
 export const uploadImage = async (file) => {
-  const signResponse = await fetch('/api/upload/sign');
-  if (!signResponse.ok) {
-    throw new Error('Failed to get upload signature.');
-  }
-  const { timestamp, signature, folder } = await signResponse.json();
+  // Use the pre-configured 'api' instance
+  const { data: signData } = await api.get('/api/upload/sign');
 
   const formData = new FormData();
   formData.append('file', file);
   formData.append('api_key', import.meta.env.VITE_CLOUDINARY_API_KEY);
-  formData.append('timestamp', timestamp);
-  formData.append('signature', signature);
-  formData.append('folder', folder);
+  formData.append('timestamp', signData.timestamp);
+  formData.append('signature', signData.signature);
+  formData.append('folder', signData.folder);
   formData.append(
     'upload_preset',
     import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET,
@@ -40,20 +44,14 @@ export const uploadImage = async (file) => {
  * @returns {Promise<object>} The newly created recipe object from the server.
  */
 export const createRecipe = async (recipeData) => {
-  const response = await fetch('/api/recipes', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(recipeData),
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json();
-    const error = new Error('Validation failed');
-    error.errors = errorData.errors;
-    throw error;
+  try {
+    const { data } = await api.post('/api/recipes', recipeData);
+    return data;
+  } catch (error) {
+    const newError = new Error('Validation failed');
+    newError.errors = error.response?.data?.errors || [];
+    throw newError;
   }
-
-  return response.json();
 };
 
 /**
@@ -62,11 +60,8 @@ export const createRecipe = async (recipeData) => {
  * @returns {Promise<object>} The recipe object.
  */
 export const getRecipeById = async (id) => {
-  const response = await fetch(`/api/recipes/${id}`);
-  if (!response.ok) {
-    throw new Error('Failed to fetch recipe.');
-  }
-  return response.json();
+  const { data } = await api.get(`/api/recipes/${id}`);
+  return data;
 };
 
 /**
@@ -76,20 +71,14 @@ export const getRecipeById = async (id) => {
  * @returns {Promise<object>} The updated recipe object from the server.
  */
 export const updateRecipe = async (id, recipeData) => {
-  const response = await fetch(`/api/recipes/${id}`, {
-    method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(recipeData),
-  });
-
-  if (!response.ok) {
-    const errorData = await response.json();
-    const error = new Error('Validation failed');
-    error.errors = errorData.errors;
-    throw error;
+  try {
+    const { data } = await api.put(`/api/recipes/${id}`, recipeData);
+    return data;
+  } catch (error) {
+    const newError = new Error('Validation failed');
+    newError.errors = error.response?.data?.errors || [];
+    throw newError;
   }
-
-  return response.json();
 };
 
 /**
@@ -98,15 +87,8 @@ export const updateRecipe = async (id, recipeData) => {
  * @returns {Promise<object>} The success message from the server.
  */
 export const deleteRecipe = async (id) => {
-  const response = await fetch(`/api/recipes/${id}`, {
-    method: 'DELETE',
-  });
-
-  if (!response.ok) {
-    throw new Error('Failed to delete recipe.');
-  }
-
-  return response.json();
+  const { data } = await api.delete(`/api/recipes/${id}`);
+  return data;
 };
 
 /**
@@ -115,16 +97,8 @@ export const deleteRecipe = async (id) => {
  * @returns {Promise<object>} The new user object.
  */
 export const signup = async (credentials) => {
-  const response = await fetch('api/users/signup', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(credentials),
-  });
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.message || 'Signup failed.');
-  }
-  return response.json();
+  const { data } = await api.post('/api/users/signup', credentials);
+  return data;
 };
 
 /**
@@ -133,16 +107,8 @@ export const signup = async (credentials) => {
  * @returns {Promise<object>} The user object.
  */
 export const login = async (credentials) => {
-  const response = await fetch('/api/users/login', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(credentials),
-  });
-  if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.message || 'Login failed.');
-  }
-  return response.json();
+  const { data } = await api.post('/api/users/login', credentials);
+  return data;
 };
 
 /**
@@ -150,11 +116,8 @@ export const login = async (credentials) => {
  * @returns {Promise<object>} The success message.
  */
 export const logout = async () => {
-  const response = await fetch('/api/users/logout', { method: 'POST' });
-  if (!response.ok) {
-    throw new Error('Logout failed.');
-  }
-  return response.json();
+  const { data } = await api.post('/api/users/logout');
+  return data;
 };
 
 /**
@@ -162,9 +125,11 @@ export const logout = async () => {
  * @returns {Promise<object|null>} The user object if logged in, otherwise null.
  */
 export const checkSession = async () => {
-  const response = await fetch('/api/users/session');
-  if (response.ok) {
-    return response.json();
+  try {
+    const { data } = await api.get('/api/users/session');
+    return data;
+  } catch (error) {
+    // A 401 or other error means no active session
+    return null;
   }
-  return null;
 };
