@@ -1,6 +1,7 @@
 import './loadEnvironment.cjs';
 import { v2 as cloudinary } from 'cloudinary';
 import express from 'express';
+import cors from 'cors';
 import connectDB from './db/connection.js';
 import recipeRoutes from './routes/recipeRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js';
@@ -19,6 +20,8 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
+
+app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
 
 app.use(express.json());
 
