@@ -1,8 +1,6 @@
-# Cookbook
+# FromScratch
 
-Love to cook but struggle to keep track of all your favorite recipes? Cookbook was created as an easy way to store, search, and find inspiration for new recipes!
-
-## Project Status
+Love to cook but struggle to keep track of all your favorite recipes? FromScratch was created as an easy way to store, search, and find inspiration for new recipes!
 
 This project is an MVP and serves as a demonstration of core full-stack features. It is still under active development.
 
@@ -19,20 +17,14 @@ This project is an MVP and serves as a demonstration of core full-stack features
 
 ### Implemented
 
-- **Dynamic Recipe Forms & Display**
-  - Users can add new recipes through a dynamic form and view the entire collection in a responsive grid.
-  - _Built with React and Mantine UI, with client-side validation powered by Zod._
+- **User Authentication:** Enforces login, registration, and session management so users can have their own private recipe collections.
 
-- **Secure Cloud Image Uploads**
-  - Implements a secure, signed upload flow. The Node.js backend generates a one-time signature, allowing the client to upload images directly to Cloudinary without exposing secret credentials.
-  - _This keeps the server stateless and improves performance by offloading the upload process._
+- **Dynamic Recipe Forms & Display:** Users can add new recipes through a dynamic form and view the entire collection in a responsive grid.
 
-- **Optimized Image Delivery**
-  - Utilizes Cloudinary transformations to serve optimized images for different parts of the UI (e.g., thumbnails), ensuring fast load times and a smooth user experience.
+- **Secure Cloud Image Uploads:** Implements a secure, signed upload flow. The Node.js backend generates a one-time signature, allowing the client to upload images directly to Cloudinary without exposing secret credentials.
 
 ### Upcoming
 
-- **User Authentication:** Implementing login, registration, and session management so users can have their own private recipe collections.
 - **AI-Powered Suggestions:** Integrating a Large Language Model (LLM) to generate new recipe ideas that users can edit and save.
 
 ## Getting Started

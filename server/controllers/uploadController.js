@@ -7,7 +7,7 @@ uploadController.signUpload = (req, res) => {
 
   const environment = process.env.NODE_ENV === 'production' ? 'prod' : 'dev';
   const userId = req.session.userId;
-  const folder = `cookbook/${environment}/${userId}`;
+  const folder = `fromscratch/${environment}/${userId}`;
 
   const uploadPreset = process.env.CLOUDINARY_UPLOAD_PRESET;
 
