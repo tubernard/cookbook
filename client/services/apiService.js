@@ -154,10 +154,3 @@ export const login = async (credentials) => {
   const { data } = await api.post('/api/users/login', credentials);
   return data;
 };
-
-/**
- * Logs out the current user by removing JWT.
- */
-export const logout = () => {
-  localStorage.removeItem('token');
-};

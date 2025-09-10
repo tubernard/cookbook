@@ -24,8 +24,8 @@ const Layout = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const handleLogout = async () => {
-    await logout();
+  const handleLogout = () => {
+    logout();
     navigate('/');
   };
 
