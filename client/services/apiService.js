@@ -17,9 +17,9 @@ const isTokenExpired = (token) => {
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
-  if (token && !isTokenExpired) {
+  if (token && !isTokenExpired(token)) {
     config.headers.Authorization = `Bearer ${token}`;
-  } else if (token && isTokenExpired) {
+  } else if (token && isTokenExpired(token)) {
     localStorage.removeItem('token');
   }
   return config;
