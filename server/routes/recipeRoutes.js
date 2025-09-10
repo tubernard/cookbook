@@ -1,7 +1,7 @@
 import express from 'express';
 import recipeController from '../controllers/recipeController.js';
 import validate from '../middleware/validate.js';
-import { recipeSchema } from '../../shared/schemas/recipeSchema.js';
+import { recipeSchema } from '../schemas/recipeSchema.js';
 
 const router = express.Router();
 

@@ -5,8 +5,7 @@
   "type": "module",
   "workspaces": [
     "client",
-    "server",
-    "shared"
+    "server"
   ],
   "scripts": {
     "dev": "concurrently \"npm:dev:client\" \"npm:dev:server\"",

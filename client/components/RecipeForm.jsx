@@ -15,7 +15,7 @@ import { notifications } from '@mantine/notifications';
 import { IconCheck, IconTrash, IconUpload, IconX } from '@tabler/icons-react';
 import { zod4Resolver } from 'mantine-form-zod-resolver';
 import { useState } from 'react';
-import { recipeSchema } from '../../shared/schemas/recipeSchema.js';
+import { recipeSchema } from '../schemas/recipeSchema.js';
 import {
   createRecipe,
   updateRecipe,
