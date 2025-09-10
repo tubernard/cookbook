@@ -55,6 +55,20 @@ export const createRecipe = async (recipeData) => {
 };
 
 /**
+ * Fetches all recipes for the user.
+ * @returns {Promise<object>} The recipe object.
+ */
+export const getRecipes = async () => {
+  try {
+    const { data } = await api.get(`/api/recipes`);
+    return data;
+  } catch (error) {
+    const newError = new Error('Error fetching recipes');
+    newError.errors = error.response?.data?.errors || [];
+    throw newError;
+  }
+};
+/**
  * Fetches a single recipe by its ID.
  * @param {string} id The ID of the recipe.
  * @returns {Promise<object>} The recipe object.
@@ -128,7 +142,7 @@ export const checkSession = async () => {
   try {
     const { data } = await api.get('/api/users/session');
     return data;
-  } catch (error) {
+  } catch {
     // A 401 or other error means no active session
     return null;
   }

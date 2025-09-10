@@ -11,7 +11,7 @@ import {
 } from '@mantine/core';
 import { Link } from 'react-router-dom';
 import RecipeCard from '../components/RecipeCard';
-import { deleteRecipe } from '../services/apiService';
+import { deleteRecipe, getRecipes } from '../services/apiService';
 import { notifications } from '@mantine/notifications';
 import {
   IconCheck,
@@ -28,11 +28,7 @@ const RecipeListPage = () => {
   useEffect(() => {
     const fetchRecipes = async () => {
       try {
-        const response = await fetch('/api/recipes');
-        if (!response.ok) {
-          throw new Error('Failed to fetch recipes');
-        }
-        const data = await response.json();
+        const data = await getRecipes();
         setRecipes(data);
       } catch (err) {
         setError(err.message);
