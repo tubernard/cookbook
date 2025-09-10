@@ -17,7 +17,7 @@ This project is an MVP and serves as a demonstration of core full-stack features
 
 ### Implemented
 
-- **User Authentication:** Enforces login, registration, and session management so users can have their own private recipe collections.
+- **User Authentication:** Enforces login, registration, and JWT-based authentication so users can have their own private recipe collections.
 
 - **Dynamic Recipe Forms & Display:** Users can add new recipes through a dynamic form and view the entire collection in a responsive grid.
 
@@ -63,6 +63,7 @@ This project is an MVP and serves as a demonstration of core full-stack features
     CLOUDINARY_API_KEY=your_api_key
     CLOUDINARY_API_SECRET=your_api_secret
     CLOUDINARY_UPLOAD_PRESET=your_signed_upload_preset_name
+    JWT_SECRET=your_jwt_secret_key
     ```
 
     Client:
@@ -71,6 +72,7 @@ This project is an MVP and serves as a demonstration of core full-stack features
     VITE_CLOUDINARY_CLOUD_NAME=your_cloud_name
     VITE_CLOUDINARY_API_KEY=your_api_key
     VITE_CLOUDINARY_UPLOAD_PRESET=your_signed_upload_preset_name
+    VITE_API_URL=your_backend_api_url
     ```
 
 ### Running the Application
