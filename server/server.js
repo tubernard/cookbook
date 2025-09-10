@@ -6,8 +6,6 @@ import connectDB from './db/connection.js';
 import recipeRoutes from './routes/recipeRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js';
 import userRoutes from './routes/userRoutes.js';
-import session from 'express-session';
-import MongoStore from 'connect-mongo';
 import isAuthenticated from './middleware/authenticate.js';
 
 const app = express();
@@ -21,26 +19,8 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-app.use(cors({ origin: process.env.FRONTEND_URL, credentials: true }));
-
+app.use(cors({ origin: process.env.FRONTEND_URL }));
 app.use(express.json());
-
-app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: false,
-    store: MongoStore.create({
-      mongoUrl: process.env.MONGO_URI,
-      collectionName: 'sessions',
-    }),
-    cookie: {
-      secure: process.env.NODE_ENV === 'production',
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60 * 24, // 1 day
-    },
-  }),
-);
 
 // API Routes
 app.use('/api/users', userRoutes);

@@ -1,41 +1,53 @@
 import User from '../models/User.js';
+import jwt from 'jsonwebtoken';
 
 const userController = {};
 
-userController.createUser = async (req, res, next) => {
-  try {
-    const { username, password } = req.body;
-    if (!username || !password) {
-      return res
-        .status(400)
-        .json({ message: 'Username and password are required.' });
-    }
-    const newUser = await User.create({ username, password });
-    res.locals.user = newUser;
-    return next();
-  } catch (error) {
-    if (error.code === 11000) {
-      // Duplicate key error
-      return res.status(409).json({ message: 'Username already taken.' });
-    }
-    return next({ log: `Error in userController.createUser: ${error}` });
-  }
+const generateToken = (userId) => {
+  return jwt.sign({ userId }, process.env.JWT_SECRET, { expiresIn: '1d' });
 };
 
-userController.verifyUser = async (req, res, next) => {
+userController.login = async (req, res) => {
   try {
     const { username, password } = req.body;
     const user = await User.findOne({ username });
 
     if (!user || !(await user.comparePassword(password))) {
-      return res
-        .status(401)
-        .json({ message: 'Incorrect username or password.' });
+      return res.status(401).json({ message: 'Invalid credentials' });
     }
-    res.locals.user = user;
-    return next();
+
+    const token = generateToken(user._id);
+
+    res.json({
+      message: 'Login successful',
+      token,
+      user: {
+        id: user._id,
+        username: user.username,
+      },
+    });
   } catch (error) {
-    return next({ log: `Error in userController.verifyUser: ${error}` });
+    res.status(500).json({ message: error.message });
+  }
+};
+
+userController.signup = async (req, res) => {
+  try {
+    const user = new User(req.body);
+    await user.save();
+
+    const token = generateToken(user._id);
+
+    res.status(201).json({
+      message: 'User created successfully',
+      token,
+      user: {
+        id: user._id,
+        username: user.username,
+      },
+    });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
 };
 

@@ -6,7 +6,7 @@ uploadController.signUpload = (req, res) => {
   const timestamp = Math.round(new Date().getTime() / 1000);
 
   const environment = process.env.NODE_ENV === 'production' ? 'prod' : 'dev';
-  const userId = req.session.userId;
+  const userId = req.userId;
   const folder = `fromscratch/${environment}/${userId}`;
 
   const uploadPreset = process.env.CLOUDINARY_UPLOAD_PRESET;

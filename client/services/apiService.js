@@ -1,9 +1,39 @@
 import axios from 'axios';
 
-const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/',
-  withCredentials: true,
+const api = axios.create({ baseURL: import.meta.env.VITE_API_URL || '/' });
+
+const isTokenExpired = (token) => {
+  if (!token) return true;
+
+  try {
+    const parts = token.split('.');
+    if (parts.length !== 3) return true;
+    const payload = JSON.parse(atob(parts[1]));
+    return payload.exp * 1000 < Date.now();
+  } catch {
+    return true;
+  }
+};
+
+api.interceptors.request.use((config) => {
+  const token = localStorage.getItem('token');
+  if (token && !isTokenExpired) {
+    config.headers.Authorization = `Bearer ${token}`;
+  } else if (token && isTokenExpired) {
+    localStorage.removeItem('token');
+  }
+  return config;
 });
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem('token');
+    }
+    return Promise.reject(error);
+  },
+);
 
 /**
  * Uploads a file to Cloudinary using a signed upload flow.
@@ -126,24 +156,8 @@ export const login = async (credentials) => {
 };
 
 /**
- * Logs out the current user.
- * @returns {Promise<object>} The success message.
+ * Logs out the current user by removing JWT.
  */
-export const logout = async () => {
-  const { data } = await api.post('/api/users/logout');
-  return data;
-};
-
-/**
- * Checks if a user session is active.
- * @returns {Promise<object|null>} The user object if logged in, otherwise null.
- */
-export const checkSession = async () => {
-  try {
-    const { data } = await api.get('/api/users/session');
-    return data;
-  } catch {
-    // A 401 or other error means no active session
-    return null;
-  }
+export const logout = () => {
+  localStorage.removeItem('token');
 };

@@ -6,7 +6,7 @@ recipeController.getRecipeById = async (req, res, next) => {
   try {
     const recipe = await Recipe.findOne({
       _id: req.params.id,
-      user: req.session.userId,
+      user: req.userId,
     });
     if (!recipe) {
       return res.status(404).json({ message: 'Recipe not found' });
@@ -23,7 +23,7 @@ recipeController.getRecipeById = async (req, res, next) => {
 
 recipeController.getRecipes = async (req, res, next) => {
   try {
-    const recipes = await Recipe.find({ user: req.session.userId });
+    const recipes = await Recipe.find({ user: req.userId });
     res.status(200).json(recipes);
   } catch (err) {
     return next({
@@ -35,7 +35,7 @@ recipeController.getRecipes = async (req, res, next) => {
 
 recipeController.addRecipe = async (req, res, next) => {
   try {
-    const newRecipe = new Recipe({ ...req.body, user: req.session.userId });
+    const newRecipe = new Recipe({ ...req.body, user: req.userId });
     const savedRecipe = await newRecipe.save();
 
     res.status(201).json(savedRecipe);
@@ -50,7 +50,7 @@ recipeController.addRecipe = async (req, res, next) => {
 recipeController.updateRecipe = async (req, res, next) => {
   try {
     const updatedRecipe = await Recipe.findOneAndUpdate(
-      { _id: req.params.id, user: req.session.userId },
+      { _id: req.params.id, user: req.userId },
       req.body,
       { new: true, runValidators: true },
     );
@@ -72,7 +72,7 @@ recipeController.deleteRecipe = async (req, res, next) => {
   try {
     const deletedRecipe = await Recipe.findOneAndDelete({
       _id: req.params.id,
-      user: req.session.userId,
+      user: req.userId,
     });
 
     if (!deletedRecipe) {

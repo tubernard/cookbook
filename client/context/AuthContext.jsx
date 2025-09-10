@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { checkSession, login, logout, signup } from '../services/apiService';
+import { login, signup } from '../services/apiService';
 import { Center, Loader } from '@mantine/core';
 
 const AuthContext = createContext(null);
@@ -9,44 +9,38 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const verifySession = async () => {
-      try {
-        const currentUser = await checkSession();
-        if (currentUser) {
-          setUser(currentUser);
-        }
-      } catch {
-        console.error('No active session found');
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    verifySession();
+    const token = localStorage.getItem('token');
+    if (token) {
+      setUser({ token });
+    }
+    setIsLoading(false);
   }, []);
 
-  const handleLogin = async (credentials) => {
-    const loggedInUser = await login(credentials);
-    setUser(loggedInUser);
-    return loggedInUser;
+  const loginUser = async (credentials) => {
+    const response = await login(credentials);
+    localStorage.setItem('token', response.token);
+    setUser(response.user);
+    return response;
   };
 
-  const handleSignup = async (credentials) => {
-    const newUser = await signup(credentials);
-    setUser(newUser);
-    return newUser;
-  };
-
-  const handleLogout = async () => {
-    await logout();
+  const logoutUser = async () => {
+    localStorage.removeItem('token');
     setUser(null);
+  };
+
+  const signupUser = async (userData) => {
+    const response = await signup(userData);
+    localStorage.setItem('token', response.token);
+    setUser(response.user);
+    return response;
   };
 
   const value = {
     user,
     isLoading,
-    login: handleLogin,
-    signup: handleSignup,
-    logout: handleLogout,
+    login: loginUser,
+    signup: signupUser,
+    logout: logoutUser,
   };
 
   if (isLoading) {
