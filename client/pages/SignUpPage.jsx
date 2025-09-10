@@ -35,7 +35,7 @@ const SignUpPage = () => {
       await signup(values);
       navigate('/recipes'); // Redirect to recipes list on successful signup
     } catch (err) {
-      setError(err.message);
+      setError(err.response?.data?.message ?? err.message);
     } finally {
       setIsLoading(false);
     }

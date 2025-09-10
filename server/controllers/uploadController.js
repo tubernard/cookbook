@@ -14,12 +14,14 @@ uploadController.signUpload = (req, res) => {
   try {
     const signature = cloudinary.utils.api_sign_request(
       {
-        timestamp: timestamp,
         folder: folder,
+        timestamp: timestamp,
         upload_preset: uploadPreset,
       },
       process.env.CLOUDINARY_API_SECRET,
     );
+
+    console.log('Generated signature:', signature);
 
     res
       .status(200)

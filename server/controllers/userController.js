@@ -47,6 +47,10 @@ userController.signup = async (req, res) => {
       },
     });
   } catch (error) {
+    if (error.code === 11000) {
+      res.status(409).json({ message: 'Username already taken' });
+      return;
+    }
     res.status(400).json({ message: error.message });
   }
 };
