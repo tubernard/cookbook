@@ -14,7 +14,7 @@ const HomePage = () => {
           marginBottom: theme.spacing.md,
         }}
       >
-        Make it From Scratch
+        Make it from scratch 🤌
       </Title>
       <Text size="lg" c="dimmed" maw={600} mx="auto">
         All your favorite recipes, organized in one place. Easily add, edit, and
