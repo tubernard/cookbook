@@ -55,4 +55,20 @@ userController.signup = async (req, res) => {
   }
 };
 
+userController.getUserById = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId).select('username');
+    if (!user) {
+      return res.status(401).json({ message: 'User not found' });
+    }
+
+    res.json({
+      id: user._id,
+      username: user.username,
+    });
+  } catch (error) {
+    res.status(401).json({ message: 'Invalid token' });
+  }
+};
+
 export default userController;

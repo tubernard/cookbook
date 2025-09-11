@@ -1,5 +1,10 @@
 import { createContext, useContext, useEffect, useState } from 'react';
-import { login, signup } from '../services/apiService';
+import {
+  isTokenExpired,
+  login,
+  signup,
+  verifyUser,
+} from '../services/apiService';
 import { Center, Loader } from '@mantine/core';
 
 const AuthContext = createContext(null);
@@ -9,11 +14,31 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      setUser({ token });
-    }
-    setIsLoading(false);
+    const checkAuthStatus = async () => {
+      const token = localStorage.getItem('token');
+
+      if (!token) {
+        setIsLoading(false);
+        return;
+      }
+      if (isTokenExpired(token)) {
+        localStorage.removeItem('token');
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        const response = await verifyUser();
+        setUser(response);
+      } catch (error) {
+        localStorage.removeItem('token');
+        setUser(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    checkAuthStatus();
   }, []);
 
   const loginUser = async (credentials) => {

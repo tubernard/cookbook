@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const api = axios.create({ baseURL: import.meta.env.VITE_API_URL || '/' });
 
-const isTokenExpired = (token) => {
+export const isTokenExpired = (token) => {
   if (!token) return true;
 
   try {
@@ -152,5 +152,14 @@ export const signup = async (credentials) => {
  */
 export const login = async (credentials) => {
   const { data } = await api.post('/api/users/login', credentials);
+  return data;
+};
+
+/**
+ * Validate token and user.
+ * @returns {Promise<object>} The user object.
+ */
+export const verifyUser = async () => {
+  const { data } = await api.get('/api/users/verify');
   return data;
 };
